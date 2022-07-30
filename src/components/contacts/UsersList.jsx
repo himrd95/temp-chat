@@ -25,7 +25,7 @@ const UsersList = () => {
 							<h3
 								style={{
 									backgroundColor:
-										user.id === botID ? 'white' : 'yellow',
+										user.id == botID ? 'white' : 'yellow',
 									padding: '5px 10px',
 								}}
 								onClick={() => clickHandler(user.id)}

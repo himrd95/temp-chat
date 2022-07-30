@@ -3,24 +3,20 @@ import cx from 'classnames';
 import '../chatwindow/chatwindow.css';
 import { useSelector } from 'react-redux';
 
-const ChatWindow = ({ chat }) => {
-	console.log(chat, 'chattttttt');
+const ChatWindow = ({ messages }) => {
+	console.log(messages, 'messagestttttt');
 	return (
-		<div className='chat-window'>
-			{chat && chat?.length > 0 ? (
-				chat?.messages?.map((message) => (
+		<div className='messages-window'>
+			{messages && messages?.length > 0 ? (
+				messages?.map((chat) => (
 					<div
-						className={cx(
-							message?.author === 'bot' ? 'bot' : 'author',
-						)}
+						className={cx(chat?.author == 'bot' ? 'bot' : 'author')}
 					>
 						<div
-							className={cx(
-								message?.author !== 'bot' && 'author-color',
-							)}
+							className={cx(chat?.author !== 'bot' && 'author-color')}
 						>
-							<p>{message?.message}</p>
-							<p style={{ fontSize: '9px' }}>{message?.date}</p>
+							<p>{chat?.message}</p>
+							<p style={{ fontSize: '9px' }}>{chat?.date}</p>
 						</div>
 					</div>
 				))

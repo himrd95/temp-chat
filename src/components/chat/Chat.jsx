@@ -22,14 +22,16 @@ function Chat() {
 	const currnetUser = useSelector(
 		(state) => state.reducers.currnetUser,
 	);
-	const chats = useSelector((state) => state.reducers.fetchedConvo);
+	const fetchedConvo = useSelector(
+		(state) => state.reducers.fetchedConvo,
+	);
 
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
-	const messages = chats.find((bot) => bot.botId === botId)?.messages;
-
-	console.log(messages, '+++++++++++++++++++', chats);
+	const messages = fetchedConvo.find(
+		(bot) => bot.botId == botId,
+	)?.messages;
 
 	const handleInputChange = (e) => {
 		setInput(e.target.value);
@@ -42,18 +44,19 @@ function Chat() {
 	};
 
 	const onMessageSubmit = () => {
+		if (input === '') return;
 		const message = input;
 		const date = moment().format('LT');
 		const payload = { id: uuidv4(), message, author: 'user', date };
 
-		dispatch(saveChat(payload, chats, currnetUser, botId));
+		dispatch(saveChat(payload, fetchedConvo, currnetUser, botId));
 		setInput('');
 
 		const start = setTimeout(() => {
 			dispatch(
 				saveChat(
 					{ ...payload, author: 'bot' },
-					chats,
+					fetchedConvo,
 					currnetUser,
 					botId,
 				),
@@ -72,7 +75,7 @@ function Chat() {
 			</div>
 			<div className='chat-box'>
 				<div className='chat-container'>
-					<ChatWindow chat={messages} />
+					<ChatWindow messages={messages} />
 				</div>
 				<div className='btm'>
 					<input

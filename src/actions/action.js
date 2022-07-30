@@ -18,10 +18,10 @@ export const registeruser = (user) => {
 		payload: user,
 	};
 };
-export const updateUser = (user) => {
+export const updateUser = (data) => {
 	return {
 		type: 'UPDATE_USER',
-		payload: user,
+		payload: data,
 	};
 };
 export const currentBot = (id) => {
@@ -39,33 +39,38 @@ export const createUser = (user) => (dispatch) => {
 
 export const saveChat =
 	(payload, chats, userId, botId) => (dispatch) => {
-		let convos = [];
 		const messages = getItem(KEYS.MESSAGES) || []; // [{userId: "", botId: "", messages: []}]
-
+		let convos = [];
 		let updatedMessages = [];
-		if (chats.length > 0) {
-			convos = chats.find((bot) => botId === bot.botId)?.messages;
-			convos.push(payload);
-		} else if (chats.length === 0) {
-			convos.push(payload);
-		}
+		let messagesTray = messages.find(
+			(bot) => botId == bot.botId && bot.userId == userId,
+		)?.messages;
 
-		if (messages.length > 0) {
-			updatedMessages = messages.map((convo) =>
-				convo?.userid !== userId
-					? convo
-					: convo.botId === botId
-					? { ...convo, messages: convos }
-					: convo,
-			);
+		if (messagesTray && messagesTray.length > 0) {
+			convos = [...messagesTray, payload];
 		} else {
-			updatedMessages.push({ botId, userId, messages: convos });
+			convos = [payload];
 		}
 
-		console.log(convos, 'convos', updatedMessages);
+		if (messagesTray) {
+			updatedMessages = messages?.map((convo) => {
+				if (convo?.userid != userId && convo?.botId == botId) {
+					return { ...convo, messages: convos };
+				} else return convo;
+			});
+		} else {
+			updatedMessages = [
+				...messages,
+				{ botId, userId, messages: convos },
+			];
+		}
 
 		setItem(KEYS.MESSAGES, updatedMessages);
-		dispatch(updateUser(chats));
+		dispatch(
+			updateUser(
+				updatedMessages.filter((bot) => bot.userId == userId),
+			),
+		);
 	};
 
 export const deleteChat = (data) => (dispatch) => {
