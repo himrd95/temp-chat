@@ -7,21 +7,25 @@ import {
 	createUser,
 	updateUser,
 	currentUser,
+	pinItem,
 } from '../../actions/action';
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { getItem } from '../../Helpers/LocalStorage';
+import { getItem, setItem } from '../../Helpers/LocalStorage';
 import { KEYS } from '../../utils/constants';
-import UsersList from '../contacts/Userslist';
+import UsersList from '../contacts/UsersList';
 
 function Chat() {
 	const [input, setInput] = useState('');
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
+	const user = getItem(KEYS.CURRENTUSER) || '';
+	const botId = Number(
+		useSelector((state) => state.reducers.currentBot),
+	);
 
 	useEffect(() => {
-		const user = getItem(KEYS.CURRENTUSER) || '';
 		dispatch(currentUser(user));
 		const allMesseages = getItem(KEYS.MESSAGES) || [];
 		const fetchedMessages = allMesseages.filter(
@@ -37,9 +41,13 @@ function Chat() {
 		(state) => state.reducers.fetchedConvo,
 	);
 
-	const botId = Number(
-		useSelector((state) => state.reducers.currentBot),
+	const pinned = useSelector((state) => state.reducers.pinned);
+	const pinnedChat = pinned.filter(
+		(pin) => pin.userId == user && pin.botId == botId,
 	);
+
+	console.log(pinnedChat, 'pinneddddd', pinned, botId, currentUser);
+
 	const messages = fetchedConvo.find(
 		(bot) => bot.botId == botId,
 	)?.messages;
@@ -79,7 +87,19 @@ function Chat() {
 		};
 	};
 
-	const handlePin = (id) => {};
+	const handlePin = (msg) => {
+		if (pinnedChat.length > 3) {
+			alert('reached maximum limit of pinned chat.');
+			return;
+		}
+		let pinnedItem = getItem(KEYS.PINNED) || [];
+		pinnedItem = [
+			...pinnedItem,
+			{ userId: user, botId: botId, message: msg },
+		];
+		setItem(KEYS.PINNED, pinnedItem);
+		dispatch(pinItem(pinnedItem));
+	};
 	return (
 		<div className='container'>
 			<div className='user-list'>
@@ -87,7 +107,11 @@ function Chat() {
 			</div>
 			<div className='chat-box'>
 				<div className='chat-container'>
-					<ChatWindow messages={messages} handlePin={handlePin} />
+					<ChatWindow
+						messages={messages}
+						handlePin={handlePin}
+						pinned={pinnedChat}
+					/>
 				</div>
 				<div className='chat-box'>
 					<div className='chat-container'>

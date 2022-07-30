@@ -3,18 +3,30 @@ import cx from 'classnames';
 import '../chatwindow/chatwindow.css';
 import { useSelector } from 'react-redux';
 
-const ChatWindow = ({ messages, handlePin }) => {
+const ChatWindow = ({ messages, handlePin, pinned }) => {
 	const [open, setOpen] = useState(false);
-	console.log(messages, 'messagestttttt');
+	const [msgId, setMsgId] = useState({});
+	console.log(messages, 'messagestttttt', pinned);
 	return (
 		<div className='messages-window'>
-			<div className='pinned'>pin</div>
+			<div className='pinned'>
+				{pinned?.map((pin) => (
+					<a href={`#${pin.message.message}`}>
+						<span>{pin.message.message}</span>
+					</a>
+				))}
+			</div>
 			{messages && messages?.length > 0 ? (
 				messages?.map((chat) => (
 					<div
 						className={cx(chat?.author == 'bot' ? 'bot' : 'author')}
+						id={chat.message}
 					>
 						<div
+							onMouseOver={() =>
+								setMsgId({ id: chat.id, auth: chat.author })
+							}
+							onMouseLeave={() => open && setOpen(false)}
 							className={cx(chat?.author !== 'bot' && 'author-color')}
 						>
 							<p>{chat?.message}</p>
@@ -22,13 +34,22 @@ const ChatWindow = ({ messages, handlePin }) => {
 							<div onClick={() => setOpen(!open)} className='options'>
 								O
 							</div>
-							{open && (
-								<div className='modal'>
-									<div onClick={() => handlePin(chat.id)}>Pin</div>
-									<div>Edit</div>
-									<div>Delete</div>
-								</div>
-							)}
+							{open &&
+								msgId.id === chat.id &&
+								msgId.auth === chat.author && (
+									<div className='modal-popup'>
+										<div
+											onClick={() => {
+												setOpen(false);
+												handlePin(chat);
+											}}
+										>
+											Pin
+										</div>
+										<div>Edit</div>
+										<div>Delete</div>
+									</div>
+								)}
 						</div>
 					</div>
 				))
