@@ -5,11 +5,14 @@ import {
 	saveChat,
 	deleteChat,
 	createUser,
+	updateUser,
+	currentUser,
 } from '../../actions/action';
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { getItem } from '../../Helpers/LocalStorage';
+import { KEYS } from '../../utils/constants';
 import UsersList from '../contacts/Userslist';
 
 function Chat() {
@@ -17,19 +20,29 @@ function Chat() {
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
 
-	useEffect(() => { }, []);
+	useEffect(() => {
+		const user = getItem(KEYS.CURRENTUSER) || '';
+		dispatch(currentUser(user));
+		const allMesseages = getItem(KEYS.MESSAGES) || [];
+		const fetchedMessages = allMesseages.filter(
+			(chats) => chats.userId == user,
+		);
+		dispatch(updateUser(fetchedMessages));
+	}, []);
 
 	const currnetUser = useSelector(
 		(state) => state.reducers.currnetUser,
 	);
-	const chats = useSelector((state) => state.reducers.fetchedConvo);
+	const fetchedConvo = useSelector(
+		(state) => state.reducers.fetchedConvo,
+	);
 
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
-	const messages = chats.find((bot) => bot.botId === botId)?.messages;
-
-	console.log(messages, '+++++++++++++++++++', chats);
+	const messages = fetchedConvo.find(
+		(bot) => bot.botId == botId,
+	)?.messages;
 
 	const handleInputChange = (e) => {
 		setInput(e.target.value);
@@ -42,18 +55,19 @@ function Chat() {
 	};
 
 	const onMessageSubmit = () => {
+		if (input === '') return;
 		const message = input;
 		const date = moment().format('LT');
 		const payload = { id: uuidv4(), message, author: 'user', date };
 
-		dispatch(saveChat(payload, chats, currnetUser, botId));
+		dispatch(saveChat(payload, fetchedConvo, currnetUser, botId));
 		setInput('');
 
 		const start = setTimeout(() => {
 			dispatch(
 				saveChat(
 					{ ...payload, author: 'bot' },
-					chats,
+					fetchedConvo,
 					currnetUser,
 					botId,
 				),
@@ -65,11 +79,15 @@ function Chat() {
 		};
 	};
 
+	const handlePin = (id) => {};
 	return (
-		<div className='chatpage'>
-			<div className='container'>
-				<div className='contacts'>
-					<UsersList />
+		<div className='container'>
+			<div className='user-list'>
+				<UsersList />
+			</div>
+			<div className='chat-box'>
+				<div className='chat-container'>
+					<ChatWindow messages={messages} handlePin={handlePin} />
 				</div>
 				<div className='chat-box'>
 					<div className='chat-container'>
@@ -83,10 +101,7 @@ function Chat() {
 							placeholder='Enter message'
 							onKeyPress={handleKeyPress}
 						></input>
-						<button
-							className='button btn'
-							onClick={onMessageSubmit}
-						>
+						<button className='button btn' onClick={onMessageSubmit}>
 							Send
 						</button>
 					</div>

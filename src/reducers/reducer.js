@@ -5,8 +5,10 @@ const currnetUser = getItem(KEYS.CURRENTUSER) || '';
 const users = getItem(KEYS.USERS) || [];
 const messages = getItem(KEYS.MESSAGES) || [];
 const fetchedMessages = messages.filter(
-	(chats) => chats.userId === currnetUser,
+	(chats) => chats.userId == currnetUser,
 );
+
+console.log(fetchedMessages, currnetUser, 'hiii');
 
 const initialData = {
 	userData: users,
@@ -44,7 +46,12 @@ const reducers = (state = initialData, action) => {
 		case 'UPDATE_USER':
 			return {
 				...state,
-				fetchedConvocurrentUser: action.payload,
+				fetchedConvo: action.payload,
+			};
+		case 'CURRENT_USER':
+			return {
+				...state,
+				currnetUser: action.payload,
 			};
 
 		default:
