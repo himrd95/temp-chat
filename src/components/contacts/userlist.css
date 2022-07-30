@@ -1,8 +1,12 @@
-.user-list {
-    position: relative;
-    left: 0;
-    width: 30%;
-    background: aqua;
-    height: 100vh;
-    margin-right: 10px;
+h3 {
+    color: white;
+}
+
+.userscontainer {
+    display: grid;
+    background-color: #ffffff39;
+}
+
+h4 {
+    color: white;
 }

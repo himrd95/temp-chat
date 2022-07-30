@@ -25,7 +25,7 @@ const ChatWindow = ({ chat }) => {
 					</div>
 				))
 			) : (
-				<h3>No conversations yet</h3>
+				<p>No conversations yet</p>
 			)}
 		</div>
 	);

@@ -1,5 +1,6 @@
 .btm {
-    width: 40vw;
+    width: 65vw;
+    height: 7vh;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -7,13 +8,18 @@
 }
 
 .btm input {
-    padding: 10px 0;
+    padding: 0px 0;
     flex-grow: 1;
+    border-radius: 5px;
+}
+
+.btn button {
+    height: 7vh;
 }
 
 .chat-container {
-    height: 80vh;
-    width: 40vw;
+    height: 78vh;
+    width: 65vw;
     overflow-y: scroll;
     border: 1px solid black;
     text-align: center;
@@ -21,8 +27,16 @@
 }
 
 .chat-box {
-    width: 40vw;
-    height: 90vh;
+    height: 85vh;
+    width: 65vw;
+    background-color: #131324;
+    ;
+}
+
+.chatpage {
+    height: 100vh;
+    width: 100vw;
+    background-color: #131324;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,20 +44,16 @@
 }
 
 .container {
-    height: 100vh;
-    width: 100vw;
-    justify-content: center;
+    border: 2px;
+    max-height: 85vh;
+    max-width: 85vw;
+    background-color: #00000076;
     display: flex;
-    background-color: #131324;
-    /* margin: 0;
-    padding: 0; */
-
 }
 
-.user-list {
-    background-color: blueviolet;
-    width: 20vw;
-    display: grid;
-    overflow: hidden;
+.contacts {
     background-color: #080420;
+    width: 20vw;
+    height: 85vh;
+
 }
