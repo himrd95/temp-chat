@@ -1,12 +1,24 @@
 h3 {
-    color: white;
+	color: white;
 }
 
+.users {
+	display: flex;
+	align-items: center;
+}
 .userscontainer {
-    display: grid;
-    background-color: #ffffff39;
+	display: grid;
+	background-color: #000b2639;
 }
 
-h4 {
-    color: white;
+h2 {
+	color: white;
+	padding: 20px;
+	border-bottom: 2px solid #323232;
+}
+
+.avatar {
+	margin: 10px;
+	width: 40px;
+	height: 40px;
 }

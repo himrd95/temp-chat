@@ -20,9 +20,10 @@ const UsersList = () => {
 			<section>
 				<div className='userscontainer'>
 					<header>
-						<h4>Contacts</h4>
+						<h2>Contacts</h2>
 						{contact?.map((user, index) => (
-							<h3
+							<div
+								className='users'
 								style={{
 									backgroundColor:
 										user.id === botID ? '' : '#ffffff39',
@@ -30,8 +31,9 @@ const UsersList = () => {
 								}}
 								onClick={() => clickHandler(user.id)}
 							>
-								{user.name}
-							</h3>
+								<img className='avatar' src={user.avatar} alt='' />
+								<h3>{user.name}</h3>
+							</div>
 						))}
 					</header>
 				</div>

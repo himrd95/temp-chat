@@ -3,10 +3,13 @@
 }
 
 .bot {
+	display: flex;
+}
+.bot > div:last-child {
 	text-align: left;
 	padding: 5px 30px 5px 10px;
 	width: fit-content;
-	margin: 5px 0 0;
+	margin: 10px 0 0;
 	background: burlywood;
 	border-radius: 5px;
 	box-shadow: 0 0 7px #a8a8a8;
@@ -20,13 +23,15 @@
 	display: flex;
 	justify-content: flex-end;
 	position: relative;
+	margin-right: 20px;
 }
 
 .author-color {
 	position: relative;
 	padding: 5px 30px 5px 10px;
 	width: fit-content;
-	margin-top: 5px;
+	margin-top: 10px;
+	margin-right: 20px;
 	background: #084218;
 	border-radius: 5px;
 	box-shadow: 0 0 7px #a8a8a8;
@@ -47,7 +52,9 @@
 	top: 0px;
 	cursor: pointer;
 }
-.bot-color {
+.options div {
+	font-size: 30px;
+	line-height: 6px;
 }
 
 .author-color:hover .options {
@@ -107,5 +114,10 @@
 	border: none;
 	outline: none;
 	width: 200px;
+	height: 30px;
+}
+.avatar {
+	margin: 5px;
+	width: 30px;
 	height: 30px;
 }

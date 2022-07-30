@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import cx from 'classnames';
 import '../chatwindow/chatwindow.css';
 import { useSelector } from 'react-redux';
+import { contact } from '../../utils/constants';
 
 const ChatWindow = ({
 	messages,
@@ -15,6 +16,10 @@ const ChatWindow = ({
 	const [edit, setEdit] = useState(false);
 	const [payload, setPayload] = useState('');
 
+	const botId = Number(
+		useSelector((state) => state.reducers.currentBot),
+	);
+
 	const handleEdit = (chat) => {
 		if (payload === '')
 			return alert("edited message can't be empty.");
@@ -24,7 +29,7 @@ const ChatWindow = ({
 		editMessages(chat, payload);
 	};
 
-	console.log(msgId, '++++++++++++++++++');
+	const avatar = contact.find((item) => item.id == botId)?.avatar;
 	return (
 		<div className='messages-window'>
 			<div className='pinned'>
@@ -36,11 +41,17 @@ const ChatWindow = ({
 			</div>
 
 			{messages && messages?.length > 0 ? (
-				messages?.map((chat) => (
+				messages?.map((chat, ind) => (
 					<div
 						className={cx(chat?.author == 'bot' ? 'bot' : 'author')}
 						id={chat.message}
 					>
+						{chat?.author == 'bot' &&
+						messages[ind - 1]?.author === 'user' ? (
+							<img className='avatar' src={avatar} alt='' />
+						) : (
+							<div className='avatar'></div>
+						)}
 						<div
 							onMouseOver={() =>
 								setMsgId({ id: chat.id, auth: chat.author })
@@ -56,7 +67,9 @@ const ChatWindow = ({
 							<p>{chat?.message}</p>
 							<p style={{ fontSize: '9px' }}>{chat?.date}</p>
 							<div onClick={() => setOpen(!open)} className='options'>
-								O
+								<div>.</div>
+								<div>.</div>
+								<div>.</div>
 							</div>
 							{open &&
 								msgId.id === chat.id &&
@@ -83,7 +96,12 @@ const ChatWindow = ({
 										>
 											Edit
 										</div>
-										<div onClick={() => delteMessages(chat.id)}>
+										<div
+											onClick={() => {
+												setOpen(false);
+												delteMessages(chat.id);
+											}}
+										>
 											Delete
 										</div>
 									</div>
