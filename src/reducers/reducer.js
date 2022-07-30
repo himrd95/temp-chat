@@ -8,6 +8,8 @@ const fetchedMessages = messages.filter(
 	(chats) => chats.userId == currnetUser,
 );
 
+console.log(fetchedMessages, currnetUser, 'hiii');
+
 const initialData = {
 	userData: users,
 	currnetUser: currnetUser,
@@ -45,6 +47,11 @@ const reducers = (state = initialData, action) => {
 			return {
 				...state,
 				fetchedConvo: action.payload,
+			};
+		case 'CURRENT_USER':
+			return {
+				...state,
+				currnetUser: action.payload,
 			};
 
 		default:

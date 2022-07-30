@@ -18,6 +18,12 @@ export const registeruser = (user) => {
 		payload: user,
 	};
 };
+export const currentUser = (user) => {
+	return {
+		type: 'CURRENT_USER',
+		payload: user,
+	};
+};
 export const updateUser = (data) => {
 	return {
 		type: 'UPDATE_USER',

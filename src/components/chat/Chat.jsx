@@ -5,19 +5,30 @@ import {
 	saveChat,
 	deleteChat,
 	createUser,
+	updateUser,
+	currentUser,
 } from '../../actions/action';
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import UsersList from '../contacts/UsersList';
 import { getItem } from '../../Helpers/LocalStorage';
+import { KEYS } from '../../utils/constants';
 
 function Chat() {
 	const [input, setInput] = useState('');
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		const user = getItem(KEYS.CURRENTUSER) || '';
+		dispatch(currentUser(user));
+		const allMesseages = getItem(KEYS.MESSAGES) || [];
+		const fetchedMessages = allMesseages.filter(
+			(chats) => chats.userId == user,
+		);
+		dispatch(updateUser(fetchedMessages));
+	}, []);
 
 	const currnetUser = useSelector(
 		(state) => state.reducers.currnetUser,
@@ -68,6 +79,7 @@ function Chat() {
 		};
 	};
 
+	const handlePin = (id) => {};
 	return (
 		<div className='container'>
 			<div className='user-list'>
@@ -75,7 +87,7 @@ function Chat() {
 			</div>
 			<div className='chat-box'>
 				<div className='chat-container'>
-					<ChatWindow messages={messages} />
+					<ChatWindow messages={messages} handlePin={handlePin} />
 				</div>
 				<div className='btm'>
 					<input
