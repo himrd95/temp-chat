@@ -37,3 +37,8 @@ export const KEYS = {
 	CURRENTUSER: 'user',
 	PINNED: 'pinned',
 };
+
+export const THEME = {
+	LIGHT: 'light',
+	DARK: 'dark',
+};

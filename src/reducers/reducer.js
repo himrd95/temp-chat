@@ -16,16 +16,17 @@ const initialData = {
 	fetchedConvo: fetchedMessages,
 	currentBot: 1,
 	pinned: getItem(KEYS.PINNED) || [],
+	theme: 'dark',
 	// currentUser: getItem("users")[0].id,
 };
 
 const reducers = (state = initialData, action) => {
 	switch (action.type) {
-		// case "SENDMESSAGE":
-		//   return {
-		//     ...state,
-		//     list: [...state.list, action.payload],
-		//   };
+		case 'CHANGE_THEME':
+			return {
+				...state,
+				theme: action.payload,
+			};
 
 		case 'DELETE_MESSAGE':
 			return {

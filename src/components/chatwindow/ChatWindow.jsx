@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import cx from 'classnames';
 import '../chatwindow/chatwindow.css';
 import { useSelector } from 'react-redux';
-import { contact } from '../../utils/constants';
+import { contact, THEME } from '../../utils/constants';
 
 const ChatWindow = ({
 	messages,
@@ -19,7 +19,8 @@ const ChatWindow = ({
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
-
+	const theme = useSelector((state) => state.reducers.theme);
+	console.log(theme, '++++++');
 	const handleEdit = (chat) => {
 		if (payload === '')
 			return alert("edited message can't be empty.");
@@ -31,7 +32,10 @@ const ChatWindow = ({
 
 	const avatar = contact.find((item) => item.id == botId)?.avatar;
 	return (
-		<div className='messages-window'>
+		<div
+			className='messages-window'
+			style={{ background: theme === THEME.DARK ? 'black' : 'white' }}
+		>
 			<div className='pinned'>
 				{pinned?.map((pin) => (
 					<a href={`#${pin.message.message}`}>

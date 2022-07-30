@@ -1,10 +1,10 @@
 import { setItem, getItem, clear } from '../Helpers/LocalStorage';
 import { KEYS } from '../utils/constants';
 
-export const sendMessage = (data) => {
+export const changeTheme = (theme) => {
 	return {
-		type: 'SENDMESSAGE',
-		payload: data,
+		type: 'CHANGE_THEME',
+		payload: theme,
 	};
 };
 export const deleteMessage = (data) => {

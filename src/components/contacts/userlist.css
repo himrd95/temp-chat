@@ -1,10 +1,12 @@
 h3 {
-	color: white;
+	/* color: white; */
 }
 
 .users {
 	display: flex;
 	align-items: center;
+	padding-right: 30px;
+	padding-left: 10px;
 }
 .userscontainer {
 	display: grid;

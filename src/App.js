@@ -8,7 +8,7 @@ import Signup from './components/signup/Signup';
 function App() {
 	return (
 		<div className='App'>
-			{/* <Navbar /> */}
+			<Navbar />
 			<Routes>
 				<Route path='/signup' element={<Signup />} />
 				<Route path='/' element={<Login />} />
