@@ -15,6 +15,7 @@ const initialData = {
 	currnetUser: currnetUser,
 	fetchedConvo: fetchedMessages,
 	currentBot: 1,
+	pinned: getItem(KEYS.PINNED) || [],
 	// currentUser: getItem("users")[0].id,
 };
 
@@ -52,6 +53,11 @@ const reducers = (state = initialData, action) => {
 			return {
 				...state,
 				currnetUser: action.payload,
+			};
+		case 'PIN_ITEM':
+			return {
+				...state,
+				pinned: action.payload,
 			};
 
 		default:

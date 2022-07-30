@@ -36,6 +36,12 @@ export const currentBot = (id) => {
 		payload: id,
 	};
 };
+export const pinItem = (chat) => {
+	return {
+		type: 'PIN_ITEM',
+		payload: chat,
+	};
+};
 
 export const createUser = (user) => (dispatch) => {
 	const getusers = getItem('users') || [];
