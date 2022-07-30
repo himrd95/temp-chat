@@ -8,3 +8,17 @@
     width: 100vw;
     background-color: #131324;
 }
+
+.signup {
+    background-color: #00000076;
+}
+
+.btn {
+    background-color: #9170ebca;
+    color: white;
+}
+
+.span {
+    color: white;
+    text-align: center;
+}

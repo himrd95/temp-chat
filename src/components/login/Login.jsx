@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleClick = () => {
     if (user.email === "" && user.password === "") {
-      alert("please enter email");
+      alert('Please Enter Your Email and Password')
       return;
     }
     const alreadyUser = userData?.find((item) => item?.email === user?.email);
@@ -43,7 +43,7 @@ const Login = () => {
 
     <div className="loginpage">
       <form className="box loginbox">
-        <h1> ADAM</h1>
+        <h1><b> AVTAR </b></h1>
         <div className="field sign_in">
           <label className="label">Email</label>
           <div className="control">
@@ -69,10 +69,10 @@ const Login = () => {
             />
           </div>
         </div>
-        <button onClick={handleClick} className="button is-primary is rounded is-small is-fullwidth ">
+        <button onClick={handleClick} className="button is rounded is-small is-fullwidth btn  ">
           Sign in
         </button>
-        <span>Dont have an Account ?</span>
+        <span className="span">Dont have an Account ?  </span>
         <a
           onClick={() => navigate("/signup")}
         >

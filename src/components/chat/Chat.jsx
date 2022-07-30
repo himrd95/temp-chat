@@ -11,9 +11,9 @@ import {
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import UsersList from '../contacts/UsersList';
 import { getItem } from '../../Helpers/LocalStorage';
 import { KEYS } from '../../utils/constants';
+import UsersList from '../contacts/Userslist';
 
 function Chat() {
 	const [input, setInput] = useState('');
@@ -89,20 +89,22 @@ function Chat() {
 				<div className='chat-container'>
 					<ChatWindow messages={messages} handlePin={handlePin} />
 				</div>
-				<div className='btm'>
-					<input
-						type='text'
-						onInput={handleInputChange}
-						value={input}
-						placeholder='Enter message'
-						onKeyPress={handleKeyPress}
-					></input>
-					<button
-						className='button is-primary'
-						onClick={onMessageSubmit}
-					>
-						Send
-					</button>
+				<div className='chat-box'>
+					<div className='chat-container'>
+						<ChatWindow chat={messages} />
+					</div>
+					<div className='btm'>
+						<input
+							type='text'
+							onInput={handleInputChange}
+							value={input}
+							placeholder='Enter message'
+							onKeyPress={handleKeyPress}
+						></input>
+						<button className='button btn' onClick={onMessageSubmit}>
+							Send
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
