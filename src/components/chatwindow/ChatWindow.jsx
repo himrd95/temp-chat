@@ -13,7 +13,18 @@ const ChatWindow = ({
 	const [open, setOpen] = useState(false);
 	const [msgId, setMsgId] = useState({});
 	const [edit, setEdit] = useState(false);
+	const [payload, setPayload] = useState('');
 
+	const handleEdit = (chat) => {
+		if (payload === '')
+			return alert("edited message can't be empty.");
+		setEdit(false);
+		setOpen(false);
+
+		editMessages(chat, payload);
+	};
+
+	console.log(msgId, '++++++++++++++++++');
 	return (
 		<div className='messages-window'>
 			<div className='pinned'>
@@ -23,6 +34,7 @@ const ChatWindow = ({
 					</a>
 				))}
 			</div>
+
 			{messages && messages?.length > 0 ? (
 				messages?.map((chat) => (
 					<div
@@ -33,14 +45,15 @@ const ChatWindow = ({
 							onMouseOver={() =>
 								setMsgId({ id: chat.id, auth: chat.author })
 							}
-							onMouseLeave={() => open && setOpen(false)}
-							className={cx(chat?.author !== 'bot' && 'author-color')}
-						>
-							{!edit ? (
-								<p>{chat?.message}</p>
-							) : (
-								<input type='text' value={chat?.message} />
+							onMouseLeave={() => {
+								open && setOpen(false);
+								edit && setEdit(false);
+							}}
+							className={cx(
+								chat?.author !== 'bot' ? 'author-color' : 'bot-color',
 							)}
+						>
+							<p>{chat?.message}</p>
 							<p style={{ fontSize: '9px' }}>{chat?.date}</p>
 							<div onClick={() => setOpen(!open)} className='options'>
 								O
@@ -61,10 +74,32 @@ const ChatWindow = ({
 												? 'Unpin'
 												: 'Pin'}
 										</div>
-										<div onClick={() => setEdit(true)}>Edit</div>
+										<div
+											onClick={() => {
+												setPayload(chat.message);
+												setOpen(false);
+												setEdit(true);
+											}}
+										>
+											Edit
+										</div>
 										<div onClick={() => delteMessages(chat.id)}>
 											Delete
 										</div>
+									</div>
+								)}
+							{edit &&
+								msgId.id === chat.id &&
+								msgId.auth === chat.author && (
+									<div className='editBox'>
+										<input
+											type='text'
+											value={payload}
+											onChange={(e) => setPayload(e.target.value)}
+										/>
+										<button onClick={() => handleEdit(chat)}>
+											Done
+										</button>
 									</div>
 								)}
 						</div>

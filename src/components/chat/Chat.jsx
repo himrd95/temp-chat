@@ -112,7 +112,35 @@ function Chat() {
 		dispatch(pinItem(pinnedItem));
 	};
 
-	const editMessages = (id) => {};
+	const editMessages = (chat, payload) => {
+		const updatedMessages = allMesseages.map((item) => {
+			if (item.botId == botId && item.userId == user) {
+				console.log(item.messages);
+				return {
+					...item,
+					messages: item.messages.map((msg) =>
+						msg.id == chat.id ? { ...msg, message: payload } : msg,
+					),
+				};
+			} else return item;
+		});
+
+		const newPin = pinned.map((msg) =>
+			msg.message.id == chat.id
+				? { ...msg, message: { ...msg.message, message: payload } }
+				: msg,
+		);
+		setItem(KEYS.PINNED, newPin);
+		dispatch(pinItem(newPin));
+
+		setItem(KEYS.MESSAGES, updatedMessages);
+
+		dispatch(
+			deleteMessage(
+				updatedMessages.filter((bot) => bot.userId == user),
+			),
+		);
+	};
 
 	const deleteMessages = (id) => {
 		const updatedMessages = allMesseages.map((item) => {
@@ -120,7 +148,7 @@ function Chat() {
 				console.log(item.messages);
 				return {
 					...item,
-					messages: item.messages.filter((msg) => msg.id !== id),
+					messages: item.messages.filter((msg) => msg.id != id),
 				};
 			} else return item;
 		});
