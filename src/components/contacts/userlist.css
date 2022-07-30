@@ -1,0 +1,8 @@
+.user-list {
+    position: relative;
+    left: 0;
+    width: 30%;
+    background: aqua;
+    height: 100vh;
+    margin-right: 10px;
+}

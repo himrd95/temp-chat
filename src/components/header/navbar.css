@@ -1,0 +1,12 @@
+.navbar {
+    color: #888888;
+
+    height: 10vh;
+
+    display: flex;
+}
+
+.navbar>img {
+    display: flex;
+    justify-items: left;
+}
