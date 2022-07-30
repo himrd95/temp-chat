@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import '../signup/signup.css'
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../../actions/action";
+import { v4 as uuidv4 } from 'uuid';
 
 const Signup = () => {
   const [user, setUser] = useState({})
@@ -19,20 +20,20 @@ const Signup = () => {
 
 
   const handleClick = () => {
-    const payload = { ...user, id: Date.now().toLocaleString(), messages: [] }
+    const payload = { ...user, id: uuidv4(), messages: [] }
     const alreadyUser = userData?.find((item) => item?.email === user?.email)
-    alreadyUser && alert('user already exists')
+    alreadyUser && alert('User Already Exist')
     alreadyUser ? navigate('/') : dispatch(createUser(payload))
     setUser({ username: '', email: '', password: '' })
     console.log(userData, 'userdatatat')
-    alert('User Registered Successfully')
+    alert('User Registered successfully')
     navigate('/')
 
   }
 
   return (
     <div className="signup-box">
-      <form className="box">
+      <form className="box signup">
         <div className="field">
           <p className="control has-icons-left">
             <input className="input" name='username' value={user.username} onChange={handleChange} type="text" placeholder="User Name" />
@@ -62,10 +63,10 @@ const Signup = () => {
         </div>
         <div className="field">
           <p className="control">
-            <button onClick={handleClick} className="button is-success is-fullwidth">Sign UP</button>
+            <button onClick={handleClick} className="button is-fullwidth btn">Sign UP</button>
           </p>
         </div>
-        <span>Already User ?  </span>
+        <span className='span'>  Already a User ?  </span>
         <a onClick={() => navigate("/")}>
           Log in
         </a>

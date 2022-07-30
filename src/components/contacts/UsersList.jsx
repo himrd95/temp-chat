@@ -20,12 +20,12 @@ const UsersList = () => {
 			<section>
 				<div className='userscontainer'>
 					<header>
-						<h3>UsersList</h3>
+						<h4>Contacts</h4>
 						{contact?.map((user, index) => (
 							<h3
 								style={{
 									backgroundColor:
-										user.id === botID ? 'white' : 'yellow',
+										user.id === botID ? '' : '#ffffff39',
 									padding: '5px 10px',
 								}}
 								onClick={() => clickHandler(user.id)}
