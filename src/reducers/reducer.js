@@ -27,11 +27,11 @@ const reducers = (state = initialData, action) => {
 		//     list: [...state.list, action.payload],
 		//   };
 
-		// case "DELETEMESSAGE":
-		//   return {
-		//     ...state,
-		//     list: [],
-		//   };
+		case 'DELETE_MESSAGE':
+			return {
+				...state,
+				fetchedConvo: action.payload,
+			};
 
 		case 'CREATE_USER':
 			return {

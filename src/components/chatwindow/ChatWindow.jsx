@@ -3,10 +3,17 @@ import cx from 'classnames';
 import '../chatwindow/chatwindow.css';
 import { useSelector } from 'react-redux';
 
-const ChatWindow = ({ messages, handlePin, pinned }) => {
+const ChatWindow = ({
+	messages,
+	handlePin,
+	pinned,
+	editMessages,
+	delteMessages,
+}) => {
 	const [open, setOpen] = useState(false);
 	const [msgId, setMsgId] = useState({});
-	console.log(messages, 'messagestttttt', pinned);
+	const [edit, setEdit] = useState(false);
+
 	return (
 		<div className='messages-window'>
 			<div className='pinned'>
@@ -29,7 +36,11 @@ const ChatWindow = ({ messages, handlePin, pinned }) => {
 							onMouseLeave={() => open && setOpen(false)}
 							className={cx(chat?.author !== 'bot' && 'author-color')}
 						>
-							<p>{chat?.message}</p>
+							{!edit ? (
+								<p>{chat?.message}</p>
+							) : (
+								<input type='text' value={chat?.message} />
+							)}
 							<p style={{ fontSize: '9px' }}>{chat?.date}</p>
 							<div onClick={() => setOpen(!open)} className='options'>
 								O
@@ -44,10 +55,16 @@ const ChatWindow = ({ messages, handlePin, pinned }) => {
 												handlePin(chat);
 											}}
 										>
-											Pin
+											{pinned.find(
+												(item) => item.message.id == chat.id,
+											)
+												? 'Unpin'
+												: 'Pin'}
 										</div>
-										<div>Edit</div>
-										<div>Delete</div>
+										<div onClick={() => setEdit(true)}>Edit</div>
+										<div onClick={() => delteMessages(chat.id)}>
+											Delete
+										</div>
 									</div>
 								)}
 						</div>

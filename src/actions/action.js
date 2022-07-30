@@ -7,9 +7,10 @@ export const sendMessage = (data) => {
 		payload: data,
 	};
 };
-export const deleteMessage = () => {
+export const deleteMessage = (data) => {
 	return {
-		type: 'DELETEMESSAGE',
+		type: 'DELETE_MESSAGE',
+		payload: data,
 	};
 };
 export const registeruser = (user) => {
