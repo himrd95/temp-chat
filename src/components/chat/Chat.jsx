@@ -23,6 +23,7 @@ function Chat() {
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
 	const user = getItem(KEYS.CURRENTUSER) || '';
+	const users = getItem(KEYS.USERS) || [];
 
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
@@ -32,6 +33,8 @@ function Chat() {
 	botRef.current = botId;
 
 	const allMesseages = getItem(KEYS.MESSAGES) || [];
+
+	const activeUser = users.find((us) => us.id == user);
 
 	useEffect(() => {
 		dispatch(currentUser(user));
@@ -198,7 +201,7 @@ function Chat() {
 				</div>
 				<div className='chat-box'>
 					<div className='header'>
-						<h1>ADAM</h1>
+						<h1>{activeUser.username}</h1>
 					</div>
 					<div className='chat-container'>
 						<ChatWindow
