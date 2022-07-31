@@ -91,7 +91,6 @@ function Chat() {
 		setInput('');
 
 		const start = setTimeout(() => {
-			console.log(botId, botRef.current, '__________');
 			if (botId != botRef.current) {
 				unreadMessages(uuidv4());
 			}
@@ -111,10 +110,6 @@ function Chat() {
 	};
 
 	const handlePin = (msg) => {
-		if (pinnedChat.length > 2) {
-			alert('reached maximum limit of pinned chat.');
-			return;
-		}
 		const alreadyPinned = pinnedChat.find(
 			(item) => item.message.id == msg.id,
 		);
@@ -124,6 +119,10 @@ function Chat() {
 			);
 			setItem(KEYS.PINNED, newPin);
 			dispatch(pinItem(newPin));
+			return;
+		}
+		if (pinnedChat.length > 2) {
+			alert('reached maximum limit of pinned chat.');
 			return;
 		}
 		let pinnedItem = getItem(KEYS.PINNED) || [];
