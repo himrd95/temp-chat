@@ -16,7 +16,7 @@ const initialData = {
 	fetchedConvo: fetchedMessages,
 	currentBot: 1,
 	pinned: getItem(KEYS.PINNED) || [],
-	theme: 'dark',
+	theme: 'light',
 	unread: getItem(KEYS.UNREAD) || [],
 	// currentUser: getItem("users")[0].id,
 };
