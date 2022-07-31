@@ -50,8 +50,8 @@ const Login = () => {
             <input
               className="input"
               name="email"
-              type="name"
-              placeholder="Enter user name"
+              type="email"
+              placeholder="Enter your email"
               onChange={handleChange}
             />
           </div>

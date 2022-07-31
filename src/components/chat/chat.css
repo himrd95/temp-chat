@@ -18,12 +18,16 @@
 }
 
 .chat-container {
-    height: 78vh;
+    height: 67vh;
     width: 65vw;
     overflow-y: scroll;
     border: 1px solid black;
     text-align: center;
     margin: 0px auto;
+}
+
+.header {
+    background-color: #080420;
 }
 
 .chat-box {

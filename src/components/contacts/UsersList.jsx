@@ -5,7 +5,7 @@ import { getItem, setItem } from '../../Helpers/LocalStorage';
 import '../contacts/userlist.css';
 import { contact } from '../../utils/constants';
 
-const UsersList = () => {
+const Userslist = () => {
 	const dispatch = useDispatch();
 
 	const userData = getItem('users') || [];
@@ -40,4 +40,4 @@ const UsersList = () => {
 	);
 };
 
-export default UsersList;
+export default Userslist;

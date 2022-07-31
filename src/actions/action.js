@@ -55,7 +55,7 @@ export const saveChat =
 		let convos = [];
 		let updatedMessages = [];
 		let messagesTray = messages.find(
-			(bot) => botId == bot.botId && bot.userId == userId,
+			(bot) => botId === bot.botId && bot.userId === userId,
 		)?.messages;
 
 		if (messagesTray && messagesTray.length > 0) {
@@ -66,7 +66,7 @@ export const saveChat =
 
 		if (messagesTray) {
 			updatedMessages = messages?.map((convo) => {
-				if (convo?.userid != userId && convo?.botId == botId) {
+				if (convo?.userid != userId && convo?.botId === botId) {
 					return { ...convo, messages: convos };
 				} else return convo;
 			});
@@ -80,7 +80,7 @@ export const saveChat =
 		setItem(KEYS.MESSAGES, updatedMessages);
 		dispatch(
 			updateUser(
-				updatedMessages.filter((bot) => bot.userId == userId),
+				updatedMessages.filter((bot) => bot.userId === userId),
 			),
 		);
 	};

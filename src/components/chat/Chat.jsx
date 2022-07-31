@@ -101,22 +101,26 @@ function Chat() {
 		dispatch(pinItem(pinnedItem));
 	};
 	return (
-		<div className='container'>
-			<div className='user-list'>
-				<UsersList />
-			</div>
-			<div className='chat-box'>
-				<div className='chat-container'>
-					<ChatWindow
-						messages={messages}
-						handlePin={handlePin}
-						pinned={pinnedChat}
-					/>
+		<div className='chatpage'>
+			<div className='container'>
+				<div className='contacts'>
+					<div className='header'>
+						<h1>UserName</h1>
+					</div>
+					<UsersList />
 				</div>
 				<div className='chat-box'>
-					<div className='chat-container'>
-						<ChatWindow chat={messages} />
+					<div className='header'>
+						<h1>ADAM</h1>
 					</div>
+					<div className='chat-container'>
+						<ChatWindow
+							messages={messages}
+							handlePin={handlePin}
+							pinned={pinnedChat}
+						/>
+					</div>
+
 					<div className='btm'>
 						<input
 							type='text'
@@ -125,7 +129,7 @@ function Chat() {
 							placeholder='Enter message'
 							onKeyPress={handleKeyPress}
 						></input>
-						<button className='button btn' onClick={onMessageSubmit}>
+						<button className='button is medium btn' onClick={onMessageSubmit}>
 							Send
 						</button>
 					</div>
