@@ -44,6 +44,8 @@ const Login = () => {
     <div className="loginpage">
       <form className="box loginbox">
         <h1><b> AVTAR </b></h1>
+
+
         <div className="field sign_in">
           <label className="label">Email</label>
           <div className="control">
@@ -70,7 +72,7 @@ const Login = () => {
           </div>
         </div>
         <button onClick={handleClick} className="button is rounded is-small is-fullwidth btn  ">
-          Sign in
+          SIGN IN
         </button>
         <span className="span">Dont have an Account ?  </span>
         <a

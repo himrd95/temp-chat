@@ -13,8 +13,11 @@
     border-radius: 5px;
 }
 
-.btn button {
+.btn-send {
     height: 7vh;
+    background-color: #9170ebca;
+    color: white;
+    border: 2px solid black;
 }
 
 .chat-container {
@@ -28,6 +31,12 @@
 
 .header {
     background-color: #080420;
+    display: flex;
+    justify-content: center;
+}
+
+.toggle {
+    align-items: flex-end;
 }
 
 .chat-box {

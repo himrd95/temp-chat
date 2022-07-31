@@ -4,6 +4,7 @@ import '../signup/signup.css';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '../../actions/action';
 import { v4 as uuidv4 } from 'uuid';
+import { changeTheme } from '../../actions/action';
 
 const Signup = () => {
 	const [user, setUser] = useState({});
@@ -33,8 +34,21 @@ const Signup = () => {
 	return (
 		<div className='signup-box'>
 			<form className='box signup'>
+				<h1><b> AVTAR </b></h1>
+				<label className='checkbox navbar-end'>
+					<input
+						type='checkbox'
+						onChange={(e) =>
+							e.target.checked
+								? dispatch(changeTheme('dark'))
+								: dispatch(changeTheme('light'))
+						}
+					/>
+					Enable Dark Mode
+				</label>
 				<div className='field'>
 					<p className='control has-icons-left'>
+						<label className="label">User Name</label>
 						<input
 							className='input'
 							name='username'
@@ -50,6 +64,7 @@ const Signup = () => {
 				</div>
 				<div className='field'>
 					<p className='control has-icons-left has-icons-right'>
+						<label className="label">Email</label>
 						<input
 							className='input'
 							name='email'
@@ -68,6 +83,7 @@ const Signup = () => {
 				</div>
 				<div className='field'>
 					<p className='control has-icons-left'>
+						<label className="label">Password</label>
 						<input
 							className='input'
 							name='password'
@@ -87,7 +103,7 @@ const Signup = () => {
 							onClick={handleClick}
 							className='button is-fullwidth btn'
 						>
-							Sign UP
+							SIGN UP
 						</button>
 					</p>
 				</div>

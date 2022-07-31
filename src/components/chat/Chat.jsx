@@ -17,6 +17,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { getItem, setItem } from '../../Helpers/LocalStorage';
 import { KEYS } from '../../utils/constants';
 import UsersList from '../contacts/UsersList';
+import { changeTheme } from '../../actions/action';
+
 
 function Chat() {
 	const [input, setInput] = useState('');
@@ -27,6 +29,8 @@ function Chat() {
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
+
+
 
 	const botRef = useRef(1);
 	botRef.current = botId;
@@ -55,6 +59,8 @@ function Chat() {
 	);
 
 	const unread = useSelector((state) => state.reducers.unread);
+	const userData = useSelector((state) => state.reducers.userData);
+
 
 	const messages = fetchedConvo.find(
 		(bot) => bot.botId == botId,
@@ -91,7 +97,6 @@ function Chat() {
 		setInput('');
 
 		const start = setTimeout(() => {
-			console.log(botId, botRef.current, '__________');
 			if (botId != botRef.current) {
 				unreadMessages(uuidv4());
 			}
@@ -188,18 +193,33 @@ function Chat() {
 			),
 		);
 	};
+
+
+
 	return (
 		<div className='chatpage'>
 			<div className='container'>
 				<div className='contacts'>
 					<div className='header'>
-						<h1>UserName</h1>
+						<h1>User</h1>
 					</div>
 					<UsersList />
 				</div>
 				<div className='chat-box'>
 					<div className='header'>
 						<h1>ADAM</h1>
+						<label className='toggle'>
+							<input
+								type='checkbox'
+								onChange={(e) =>
+									e.target.checked
+										? dispatch(changeTheme('dark'))
+										: dispatch(changeTheme('light'))
+								}
+							/>
+							Enable Dark Mode
+						</label>
+						<a href='./'>Logout</a>
 					</div>
 					<div className='chat-container'>
 						<ChatWindow
@@ -220,7 +240,7 @@ function Chat() {
 							onKeyPress={handleKeyPress}
 						></input>
 						<button
-							className='button is medium btn'
+							className='button is medium btn-send'
 							onClick={onMessageSubmit}
 						>
 							Send
