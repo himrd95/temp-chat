@@ -4,11 +4,8 @@ import { KEYS } from '../utils/constants';
 const currnetUser = getItem(KEYS.CURRENTUSER) || '';
 const users = getItem(KEYS.USERS) || [];
 const messages = getItem(KEYS.MESSAGES) || [];
-const fetchedMessages = messages.filter(
-	(chats) => chats.userId == currnetUser,
+const fetchedMessages = messages.filter((chats) => chats.userId == currnetUser,
 );
-
-//(fetchedMessages, currnetUser, 'hiii');
 
 const initialData = {
 	userData: users,
@@ -18,7 +15,6 @@ const initialData = {
 	pinned: getItem(KEYS.PINNED) || [],
 	theme: 'light',
 	unread: getItem(KEYS.UNREAD) || [],
-	// currentUser: getItem("users")[0].id,
 };
 
 const reducers = (state = initialData, action) => {

@@ -1,73 +1,51 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../chat/chat.css';
-import {
-	saveChat,
-	deleteChat,
-	createUser,
-	updateUser,
-	currentUser,
-	pinItem,
-	deleteMessage,
-	setUnread,
-} from '../../actions/action';
+import { saveChat, deleteChat, createUser, updateUser, currentUser, pinItem, deleteMessage, setUnread } from '../../actions/action';
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { getItem, setItem } from '../../Helpers/LocalStorage';
-import { KEYS } from '../../utils/constants';
+import { KEYS, THEME } from '../../utils/constants';
 import UsersList from '../contacts/UsersList';
 import { changeTheme } from '../../actions/action';
 
 
 function Chat() {
+
 	const [input, setInput] = useState('');
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
 	const user = getItem(KEYS.CURRENTUSER) || '';
 	const users = getItem(KEYS.USERS) || [];
+	const theme = useSelector((state) => state.reducers.theme);
 
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
 
-
-
 	const botRef = useRef(1);
 	botRef.current = botId;
 
 	const allMesseages = getItem(KEYS.MESSAGES) || [];
-
 	const activeUser = users.find((us) => us.id == user);
 
 	useEffect(() => {
 		dispatch(currentUser(user));
-
-		const fetchedMessages = allMesseages.filter(
-			(chats) => chats.userId == user,
-		);
+		const fetchedMessages = allMesseages.filter((chats) => chats.userId == user,);
 		dispatch(updateUser(fetchedMessages));
 	}, []);
 
-	const currnetUser = useSelector(
-		(state) => state.reducers.currnetUser,
-	);
-	const fetchedConvo = useSelector(
-		(state) => state.reducers.fetchedConvo,
-	);
-
+	const currnetUser = useSelector((state) => state.reducers.currnetUser);
+	const fetchedConvo = useSelector((state) => state.reducers.fetchedConvo);
 	const pinned = useSelector((state) => state.reducers.pinned);
-	const pinnedChat = pinned.filter(
-		(pin) => pin.userId == user && pin.botId == botId,
-	);
+	const pinnedChat = pinned.filter((pin) => pin.userId == user && pin.botId == botId,);
 
 	const unread = useSelector((state) => state.reducers.unread);
 	const userData = useSelector((state) => state.reducers.userData);
 
 
-	const messages = fetchedConvo.find(
-		(bot) => bot.botId == botId,
-	)?.messages;
+	const messages = fetchedConvo.find((bot) => bot.botId == botId,)?.messages;
 
 	const handleInputChange = (e) => {
 		setInput(e.target.value);
@@ -87,7 +65,6 @@ function Chat() {
 		];
 		setItem(KEYS.UNREAD, updatedUnread);
 		dispatch(setUnread(updatedUnread));
-		console.log('added in the unread');
 	};
 
 	const onMessageSubmit = () => {
@@ -95,7 +72,6 @@ function Chat() {
 		const message = input;
 		const date = moment().format('LT');
 		const payload = { id: uuidv4(), message, author: 'user', date };
-
 		dispatch(saveChat(payload, fetchedConvo, currnetUser, botId));
 		setInput('');
 
@@ -111,7 +87,7 @@ function Chat() {
 					botId,
 				),
 			);
-		}, 10000);
+		}, 30000);
 
 		return () => {
 			clearTimeout(start);
@@ -119,13 +95,9 @@ function Chat() {
 	};
 
 	const handlePin = (msg) => {
-		const alreadyPinned = pinnedChat.find(
-			(item) => item.message.id == msg.id,
-		);
+		const alreadyPinned = pinnedChat.find((item) => item.message.id == msg.id,);
 		if (alreadyPinned) {
-			const newPin = pinned.filter(
-				(item) => item.message.id != msg.id,
-			);
+			const newPin = pinned.filter((item) => item.message.id != msg.id,);
 			setItem(KEYS.PINNED, newPin);
 			dispatch(pinItem(newPin));
 			return;
@@ -146,7 +118,6 @@ function Chat() {
 	const editMessages = (chat, payload) => {
 		const updatedMessages = allMesseages.map((item) => {
 			if (item.botId == botId && item.userId == user) {
-				//(item.messages);
 				return {
 					...item,
 					messages: item.messages.map((msg) =>
@@ -163,9 +134,7 @@ function Chat() {
 		);
 		setItem(KEYS.PINNED, newPin);
 		dispatch(pinItem(newPin));
-
 		setItem(KEYS.MESSAGES, updatedMessages);
-
 		dispatch(
 			deleteMessage(
 				updatedMessages.filter((bot) => bot.userId == user),
@@ -203,14 +172,29 @@ function Chat() {
 		<div className='chatpage'>
 			<div className='container'>
 				<div className='contacts'>
-					<div className='header'>
-						<h1>User</h1>
-					</div>
 					<UsersList />
+					<div className='header-user'
+						style={
+							theme === THEME.DARK
+								? {
+									background: '#576F72',
+									color: 'white',
+								}
+								: {
+									background: '#ebebeb',
+									color: 'black',
+								}
+						}>
+						<img src='https://robohash.org/BLH.png?set=set3' />
+						<h2>{activeUser.username}</h2>
+					</div>
 				</div>
 				<div className='chat-box'>
 					<div className='header'>
-						<h1>ADAM</h1>
+						<div className="logo">
+							<h1><b>Adam</b></h1>
+							<img className='logo-img' src='./logo.png' alt='logo' />
+						</div>
 						<label className='toggle'>
 							<input
 								type='checkbox'
@@ -222,10 +206,20 @@ function Chat() {
 							/>
 							Enable Dark Mode
 						</label>
-						<a href='./'>Logout</a>
-						<h1>{activeUser.username}</h1>
+						<a className='log' href='./'>Logout</a>
 					</div>
-					<div className='chat-container'>
+					<div className='chat-container'
+						style={
+							theme === THEME.DARK
+								? {
+									background: 'black',
+									color: 'white',
+								}
+								: {
+									background: 'white',
+									color: 'black',
+								}
+						}>
 						<ChatWindow
 							messages={messages}
 							handlePin={handlePin}
@@ -234,7 +228,6 @@ function Chat() {
 							delteMessages={deleteMessages}
 						/>
 					</div>
-
 					<div className='btm'>
 						<input
 							type='text'

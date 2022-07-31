@@ -21,7 +21,7 @@
 }
 
 .chat-container {
-    height: 67vh;
+    height: 69.5vh;
     width: 65vw;
     overflow-y: scroll;
     border: 1px solid black;
@@ -33,10 +33,35 @@
     background-color: #080420;
     display: flex;
     justify-content: center;
+    position: relative;
+}
+
+.header-user {
+    background-color: #888888;
+    display: flex;
+    justify-content: center;
+    min-height: 5vw;
+    min-width: 20vw;
+    position: absolute;
+    bottom: 0;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.header-user h2 {
+    color: black;
+}
+
+.header-user img {
+    height: 60px;
+    width: auto;
 }
 
 .toggle {
     align-items: flex-end;
+    position: absolute;
+    left: 0;
+    color: aliceblue;
 }
 
 .chat-box {
@@ -44,6 +69,11 @@
     width: 65vw;
     background-color: #131324;
     ;
+}
+
+.log {
+    position: absolute;
+    right: 0;
 }
 
 .chatpage {
@@ -57,6 +87,7 @@
 }
 
 .container {
+    position: relative;
     border: 2px;
     max-height: 85vh;
     max-width: 85vw;
@@ -69,4 +100,16 @@
     width: 20vw;
     height: 85vh;
 
+}
+
+.logo-img {
+    width: 60px;
+    margin-left: 8px;
+}
+
+.logo {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 }

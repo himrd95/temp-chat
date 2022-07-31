@@ -4,13 +4,8 @@ import '../chatwindow/chatwindow.css';
 import { useSelector } from 'react-redux';
 import { contact, THEME } from '../../utils/constants';
 
-const ChatWindow = ({
-	messages,
-	handlePin,
-	pinned,
-	editMessages,
-	delteMessages,
-}) => {
+const ChatWindow = ({ messages, handlePin, pinned, editMessages, delteMessages, }) => {
+
 	const [open, setOpen] = useState(false);
 	const [msgId, setMsgId] = useState({});
 	const [edit, setEdit] = useState(false);
@@ -19,22 +14,22 @@ const ChatWindow = ({
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
+
 	const theme = useSelector((state) => state.reducers.theme);
+
 	const handleEdit = (chat) => {
 		if (payload === '')
 			return alert("edited message can't be empty.");
 		setEdit(false);
 		setOpen(false);
-
 		editMessages(chat, payload);
 	};
 
 	const avatar = contact.find((item) => item.id == botId)?.avatar;
+
 	return (
-		<div
-			className='messages-window'
-			style={{ background: theme === THEME.DARK ? 'black' : 'white' }}
-		>
+		<div className='messages-window'
+			style={{ background: theme === THEME.DARK ? 'black' : 'white' }}>
 			<div className='pinned'>
 				{pinned?.map((pin) => (
 					<a href={`#${pin.message.message}`}>
@@ -50,7 +45,7 @@ const ChatWindow = ({
 						id={chat.message}
 					>
 						{chat?.author == 'bot' &&
-						messages[ind - 1]?.author === 'user' ? (
+							messages[ind - 1]?.author === 'user' ? (
 							<img className='avatar' src={avatar} alt='' />
 						) : (
 							<div className='avatar'></div>

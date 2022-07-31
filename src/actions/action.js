@@ -78,10 +78,7 @@ export const saveChat =
 				} else return convo;
 			});
 		} else {
-			updatedMessages = [
-				...messages,
-				{ botId, userId, messages: convos },
-			];
+			updatedMessages = [...messages, { botId, userId, messages: convos }];
 		}
 
 		setItem(KEYS.MESSAGES, updatedMessages);

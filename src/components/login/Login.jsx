@@ -6,9 +6,11 @@ import { setItem } from "../../Helpers/LocalStorage";
 import { KEYS } from "../../utils/constants";
 
 
-const Login = () => {
-  const navigate = useNavigate();
 
+
+const Login = () => {
+
+  const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
 
   const userData = useSelector((state) => state.reducers.userData);
@@ -36,16 +38,14 @@ const Login = () => {
         : alert("password is wrong");
   };
 
-  const Register = () => {
-    navigate('./')
-  }
   return (
 
     <div className="loginpage">
       <form className="box loginbox">
-        <h1><b> AVTAR </b></h1>
-
-
+        <div className="logo">
+          <h1><b>Adam</b></h1>
+          <img src='./logo.png' alt='logo' />
+        </div>
         <div className="field sign_in">
           <label className="label">Email</label>
           <div className="control">
@@ -58,7 +58,6 @@ const Login = () => {
             />
           </div>
         </div>
-
         <div className="field sign_in">
           <label className="label">Password</label>
           <div className="control">

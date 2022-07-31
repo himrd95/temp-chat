@@ -4,12 +4,11 @@ import '../signup/signup.css';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '../../actions/action';
 import { v4 as uuidv4 } from 'uuid';
-import { changeTheme } from '../../actions/action';
 
 const Signup = () => {
+
 	const [user, setUser] = useState({});
 	const navigate = useNavigate();
-
 	const dispatch = useDispatch();
 
 	const userData = useSelector((state) => state.reducers.userData);
@@ -26,7 +25,6 @@ const Signup = () => {
 		alreadyUser && alert('User Already Exist');
 		alreadyUser ? navigate('/') : dispatch(createUser(payload));
 		setUser({ username: '', email: '', password: '' });
-		//(userData, 'userdatatat')
 		alert('User Registered successfully');
 		navigate('/');
 	};
@@ -34,18 +32,10 @@ const Signup = () => {
 	return (
 		<div className='signup-box'>
 			<form className='box signup'>
-				<h1><b> AVTAR </b></h1>
-				<label className='checkbox navbar-end'>
-					<input
-						type='checkbox'
-						onChange={(e) =>
-							e.target.checked
-								? dispatch(changeTheme('dark'))
-								: dispatch(changeTheme('light'))
-						}
-					/>
-					Enable Dark Mode
-				</label>
+				<div className="logo">
+					<h1><b>Adam</b></h1>
+					<img className='logo-img' src='./logo.png' alt='logo' />
+				</div>
 				<div className='field'>
 					<p className='control has-icons-left'>
 						<label className="label">User Name</label>
