@@ -1,35 +1,62 @@
 h3 {
-    /* color: white; */
+	/* color: white; */
 }
 
 .users {
-    display: flex;
-    align-items: center;
-    padding-right: 30px;
-    padding-left: 10px;
+	display: flex;
+	align-items: center;
+	padding-right: 70px;
+	padding-left: 10px;
+	transition: 0.3s;
+	position: relative;
+	border-bottom: 1px solid gray;
+}
+.activeUser {
+	display: flex;
+	align-items: center;
+	padding-right: 70px;
+	padding-left: 10px;
+
+	background-color: #2c3639 !important;
+	color: white !important;
+	transition: 0.3s;
+	position: relative;
 }
 
 .userscontainer {
-    display: grid;
-    background-color: #000b2639;
+	display: grid;
+	background-color: #000b2639;
 }
 
 h4 {
-    color: white;
-    text-align: center;
-    height: 5vh;
-    justify-content: center;
-    align-items: center;
+	color: white;
+	text-align: center;
+	height: 5vh;
+	justify-content: center;
+	align-items: center;
 }
 
 h2 {
-    color: white;
-    padding: 20px;
-    border-bottom: 2px solid #323232;
+	color: white;
+	padding: 20px;
+	border-bottom: 2px solid #323232;
+	font-size: 20px;
 }
 
 .avatar {
-    margin: 10px;
-    width: 40px;
-    height: 40px;
+	margin: 10px;
+	width: 40px;
+	height: 40px;
+}
+.unread {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: lightcoral;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	right: 10px;
+	color: white;
 }

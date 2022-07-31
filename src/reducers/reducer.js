@@ -8,7 +8,7 @@ const fetchedMessages = messages.filter(
 	(chats) => chats.userId == currnetUser,
 );
 
-console.log(fetchedMessages, currnetUser, 'hiii');
+//(fetchedMessages, currnetUser, 'hiii');
 
 const initialData = {
 	userData: users,
@@ -17,6 +17,7 @@ const initialData = {
 	currentBot: 1,
 	pinned: getItem(KEYS.PINNED) || [],
 	theme: 'dark',
+	unread: getItem(KEYS.UNREAD) || [],
 	// currentUser: getItem("users")[0].id,
 };
 
@@ -59,6 +60,11 @@ const reducers = (state = initialData, action) => {
 			return {
 				...state,
 				pinned: action.payload,
+			};
+		case 'UNREAD':
+			return {
+				...state,
+				unread: action.payload,
 			};
 
 		default:

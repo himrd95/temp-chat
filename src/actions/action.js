@@ -43,6 +43,12 @@ export const pinItem = (chat) => {
 		payload: chat,
 	};
 };
+export const setUnread = (chat) => {
+	return {
+		type: 'UNREAD',
+		payload: chat,
+	};
+};
 
 export const createUser = (user) => (dispatch) => {
 	const getusers = getItem('users') || [];

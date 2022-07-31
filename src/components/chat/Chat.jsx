@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../chat/chat.css';
 import {
@@ -9,6 +9,7 @@ import {
 	currentUser,
 	pinItem,
 	deleteMessage,
+	setUnread,
 } from '../../actions/action';
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
@@ -22,9 +23,14 @@ function Chat() {
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
 	const user = getItem(KEYS.CURRENTUSER) || '';
+
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
+
+	const botRef = useRef(1);
+	botRef.current = botId;
+
 	const allMesseages = getItem(KEYS.MESSAGES) || [];
 
 	useEffect(() => {
@@ -48,6 +54,8 @@ function Chat() {
 		(pin) => pin.userId == user && pin.botId == botId,
 	);
 
+	const unread = useSelector((state) => state.reducers.unread);
+
 	const messages = fetchedConvo.find(
 		(bot) => bot.botId == botId,
 	)?.messages;
@@ -62,6 +70,17 @@ function Chat() {
 		}
 	};
 
+	const unreadMessages = (id) => {
+		const unreadMessages = getItem(KEYS.UNREAD) || [];
+		const updatedUnread = [
+			...unreadMessages,
+			{ userId: user, botId: botId, chatId: id },
+		];
+		setItem(KEYS.UNREAD, updatedUnread);
+		dispatch(setUnread(updatedUnread));
+		console.log('added in the unread');
+	};
+
 	const onMessageSubmit = () => {
 		if (input === '') return;
 		const message = input;
@@ -72,6 +91,10 @@ function Chat() {
 		setInput('');
 
 		const start = setTimeout(() => {
+			console.log(botId, botRef.current, '__________');
+			if (botId != botRef.current) {
+				unreadMessages(uuidv4());
+			}
 			dispatch(
 				saveChat(
 					{ ...payload, author: 'bot', id: uuidv4() },
@@ -80,7 +103,7 @@ function Chat() {
 					botId,
 				),
 			);
-		}, 5000);
+		}, 10000);
 
 		return () => {
 			clearTimeout(start);
@@ -115,7 +138,7 @@ function Chat() {
 	const editMessages = (chat, payload) => {
 		const updatedMessages = allMesseages.map((item) => {
 			if (item.botId == botId && item.userId == user) {
-				console.log(item.messages);
+				//(item.messages);
 				return {
 					...item,
 					messages: item.messages.map((msg) =>
@@ -145,7 +168,7 @@ function Chat() {
 	const deleteMessages = (id) => {
 		const updatedMessages = allMesseages.map((item) => {
 			if (item.botId == botId && item.userId == user) {
-				console.log(item.messages);
+				//(item.messages);
 				return {
 					...item,
 					messages: item.messages.filter((msg) => msg.id != id),
@@ -175,6 +198,9 @@ function Chat() {
 					<UsersList />
 				</div>
 				<div className='chat-box'>
+					<div className='header'>
+						<h1>ADAM</h1>
+					</div>
 					<div className='chat-container'>
 						<ChatWindow
 							messages={messages}
@@ -184,30 +210,21 @@ function Chat() {
 							delteMessages={deleteMessages}
 						/>
 					</div>
-					<div className='chat-box'>
-						<div className='header'>
-							<h1>ADAM</h1>
-						</div>
-						<div className='chat-container'>
-							<ChatWindow
-								messages={messages}
-								handlePin={handlePin}
-								pinned={pinnedChat}
-							/>
-						</div>
 
-						<div className='btm'>
-							<input
-								type='text'
-								onInput={handleInputChange}
-								value={input}
-								placeholder='Enter message'
-								onKeyPress={handleKeyPress}
-							></input>
-							<button className='button is medium btn' onClick={onMessageSubmit}>
-								Send
-							</button>
-						</div>
+					<div className='btm'>
+						<input
+							type='text'
+							onInput={handleInputChange}
+							value={input}
+							placeholder='Enter message'
+							onKeyPress={handleKeyPress}
+						></input>
+						<button
+							className='button is medium btn'
+							onClick={onMessageSubmit}
+						>
+							Send
+						</button>
 					</div>
 				</div>
 			</div>
