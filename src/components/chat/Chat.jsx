@@ -25,6 +25,7 @@ function Chat() {
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
 	const user = getItem(KEYS.CURRENTUSER) || '';
+	const users = getItem(KEYS.USERS) || [];
 
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
@@ -36,6 +37,8 @@ function Chat() {
 	botRef.current = botId;
 
 	const allMesseages = getItem(KEYS.MESSAGES) || [];
+
+	const activeUser = users.find((us) => us.id == user);
 
 	useEffect(() => {
 		dispatch(currentUser(user));
@@ -116,10 +119,6 @@ function Chat() {
 	};
 
 	const handlePin = (msg) => {
-		if (pinnedChat.length > 2) {
-			alert('reached maximum limit of pinned chat.');
-			return;
-		}
 		const alreadyPinned = pinnedChat.find(
 			(item) => item.message.id == msg.id,
 		);
@@ -129,6 +128,10 @@ function Chat() {
 			);
 			setItem(KEYS.PINNED, newPin);
 			dispatch(pinItem(newPin));
+			return;
+		}
+		if (pinnedChat.length > 2) {
+			alert('reached maximum limit of pinned chat.');
 			return;
 		}
 		let pinnedItem = getItem(KEYS.PINNED) || [];
@@ -220,6 +223,7 @@ function Chat() {
 							Enable Dark Mode
 						</label>
 						<a href='./'>Logout</a>
+						<h1>{activeUser.username}</h1>
 					</div>
 					<div className='chat-container'>
 						<ChatWindow
