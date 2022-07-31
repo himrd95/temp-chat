@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../chat/chat.css';
 import {
@@ -23,9 +23,14 @@ function Chat() {
 	const [chat, setChat] = useState([]);
 	const dispatch = useDispatch();
 	const user = getItem(KEYS.CURRENTUSER) || '';
+
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
+
+	const botRef = useRef(1);
+	botRef.current = botId;
+
 	const allMesseages = getItem(KEYS.MESSAGES) || [];
 
 	useEffect(() => {
@@ -86,7 +91,8 @@ function Chat() {
 		setInput('');
 
 		const start = setTimeout(() => {
-			if (botId != payload.botId) {
+			console.log(botId, botRef.current, '__________');
+			if (botId != botRef.current) {
 				unreadMessages(uuidv4());
 			}
 			dispatch(
@@ -97,7 +103,7 @@ function Chat() {
 					botId,
 				),
 			);
-		}, 15000);
+		}, 10000);
 
 		return () => {
 			clearTimeout(start);
@@ -132,7 +138,7 @@ function Chat() {
 	const editMessages = (chat, payload) => {
 		const updatedMessages = allMesseages.map((item) => {
 			if (item.botId == botId && item.userId == user) {
-				console.log(item.messages);
+				//(item.messages);
 				return {
 					...item,
 					messages: item.messages.map((msg) =>
@@ -162,7 +168,7 @@ function Chat() {
 	const deleteMessages = (id) => {
 		const updatedMessages = allMesseages.map((item) => {
 			if (item.botId == botId && item.userId == user) {
-				console.log(item.messages);
+				//(item.messages);
 				return {
 					...item,
 					messages: item.messages.filter((msg) => msg.id != id),
@@ -197,22 +203,17 @@ function Chat() {
 						delteMessages={deleteMessages}
 					/>
 				</div>
-				<div className='chat-box'>
-					<div className='chat-container'>
-						<ChatWindow chat={messages} />
-					</div>
-					<div className='btm'>
-						<input
-							type='text'
-							onInput={handleInputChange}
-							value={input}
-							placeholder='Enter message'
-							onKeyPress={handleKeyPress}
-						></input>
-						<button className='button btn' onClick={onMessageSubmit}>
-							Send
-						</button>
-					</div>
+				<div className='btm'>
+					<input
+						type='text'
+						onInput={handleInputChange}
+						value={input}
+						placeholder='Enter message'
+						onKeyPress={handleKeyPress}
+					></input>
+					<button className='button btn' onClick={onMessageSubmit}>
+						Send
+					</button>
 				</div>
 			</div>
 		</div>

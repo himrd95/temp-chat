@@ -20,7 +20,6 @@ const ChatWindow = ({
 		useSelector((state) => state.reducers.currentBot),
 	);
 	const theme = useSelector((state) => state.reducers.theme);
-	console.log(theme, '++++++');
 	const handleEdit = (chat) => {
 		if (payload === '')
 			return alert("edited message can't be empty.");

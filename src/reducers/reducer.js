@@ -8,7 +8,7 @@ const fetchedMessages = messages.filter(
 	(chats) => chats.userId == currnetUser,
 );
 
-console.log(fetchedMessages, currnetUser, 'hiii');
+//(fetchedMessages, currnetUser, 'hiii');
 
 const initialData = {
 	userData: users,
