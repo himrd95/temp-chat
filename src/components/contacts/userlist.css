@@ -9,6 +9,7 @@ h3 {
 	padding-left: 10px;
 	transition: 0.3s;
 	position: relative;
+	border-bottom: 1px solid gray;
 }
 .activeUser {
 	display: flex;

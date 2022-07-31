@@ -31,7 +31,6 @@ const UsersList = () => {
 		const unreadChat = unread.filter(
 			(msg) => msg.userId == user && msg.botId == id,
 		);
-		console.log(unreadChat.length, 'unreadChat', unread);
 		return unreadChat.length;
 	};
 	return (

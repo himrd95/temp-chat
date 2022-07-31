@@ -50,9 +50,6 @@ function Chat() {
 	);
 
 	const unread = useSelector((state) => state.reducers.unread);
-	const unreadChat = unread.filter(
-		(msg) => msg.userId == user && msg.botId == botId,
-	);
 
 	const messages = fetchedConvo.find(
 		(bot) => bot.botId == botId,
@@ -69,12 +66,14 @@ function Chat() {
 	};
 
 	const unreadMessages = (id) => {
+		const unreadMessages = getItem(KEYS.UNREAD) || [];
 		const updatedUnread = [
-			...unread,
+			...unreadMessages,
 			{ userId: user, botId: botId, chatId: id },
 		];
 		setItem(KEYS.UNREAD, updatedUnread);
 		dispatch(setUnread(updatedUnread));
+		console.log('added in the unread');
 	};
 
 	const onMessageSubmit = () => {
@@ -82,14 +81,13 @@ function Chat() {
 		const message = input;
 		const date = moment().format('LT');
 		const payload = { id: uuidv4(), message, author: 'user', date };
-		const currentBot = botId;
 
 		dispatch(saveChat(payload, fetchedConvo, currnetUser, botId));
 		setInput('');
 
 		const start = setTimeout(() => {
 			if (botId != payload.botId) {
-				unreadMessages(currentBot);
+				unreadMessages(uuidv4());
 			}
 			dispatch(
 				saveChat(
@@ -99,7 +97,7 @@ function Chat() {
 					botId,
 				),
 			);
-		}, 10000);
+		}, 15000);
 
 		return () => {
 			clearTimeout(start);
