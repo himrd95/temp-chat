@@ -1,15 +1,16 @@
 import { setItem, getItem, clear } from '../Helpers/LocalStorage';
 import { KEYS } from '../utils/constants';
 
-export const sendMessage = (data) => {
+export const changeTheme = (theme) => {
 	return {
-		type: 'SENDMESSAGE',
-		payload: data,
+		type: 'CHANGE_THEME',
+		payload: theme,
 	};
 };
-export const deleteMessage = () => {
+export const deleteMessage = (data) => {
 	return {
-		type: 'DELETEMESSAGE',
+		type: 'DELETE_MESSAGE',
+		payload: data,
 	};
 };
 export const registeruser = (user) => {

@@ -8,6 +8,7 @@ import {
 	updateUser,
 	currentUser,
 	pinItem,
+	deleteMessage,
 } from '../../actions/action';
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
@@ -24,10 +25,11 @@ function Chat() {
 	const botId = Number(
 		useSelector((state) => state.reducers.currentBot),
 	);
+	const allMesseages = getItem(KEYS.MESSAGES) || [];
 
 	useEffect(() => {
 		dispatch(currentUser(user));
-		const allMesseages = getItem(KEYS.MESSAGES) || [];
+
 		const fetchedMessages = allMesseages.filter(
 			(chats) => chats.userId == user,
 		);
@@ -45,8 +47,6 @@ function Chat() {
 	const pinnedChat = pinned.filter(
 		(pin) => pin.userId == user && pin.botId == botId,
 	);
-
-	console.log(pinnedChat, 'pinneddddd', pinned, botId, currentUser);
 
 	const messages = fetchedConvo.find(
 		(bot) => bot.botId == botId,
@@ -74,7 +74,7 @@ function Chat() {
 		const start = setTimeout(() => {
 			dispatch(
 				saveChat(
-					{ ...payload, author: 'bot' },
+					{ ...payload, author: 'bot', id: uuidv4() },
 					fetchedConvo,
 					currnetUser,
 					botId,
@@ -88,8 +88,19 @@ function Chat() {
 	};
 
 	const handlePin = (msg) => {
-		if (pinnedChat.length > 3) {
+		if (pinnedChat.length > 2) {
 			alert('reached maximum limit of pinned chat.');
+			return;
+		}
+		const alreadyPinned = pinnedChat.find(
+			(item) => item.message.id == msg.id,
+		);
+		if (alreadyPinned) {
+			const newPin = pinned.filter(
+				(item) => item.message.id != msg.id,
+			);
+			setItem(KEYS.PINNED, newPin);
+			dispatch(pinItem(newPin));
 			return;
 		}
 		let pinnedItem = getItem(KEYS.PINNED) || [];
@@ -99,6 +110,60 @@ function Chat() {
 		];
 		setItem(KEYS.PINNED, pinnedItem);
 		dispatch(pinItem(pinnedItem));
+	};
+
+	const editMessages = (chat, payload) => {
+		const updatedMessages = allMesseages.map((item) => {
+			if (item.botId == botId && item.userId == user) {
+				console.log(item.messages);
+				return {
+					...item,
+					messages: item.messages.map((msg) =>
+						msg.id == chat.id ? { ...msg, message: payload } : msg,
+					),
+				};
+			} else return item;
+		});
+
+		const newPin = pinned.map((msg) =>
+			msg.message.id == chat.id
+				? { ...msg, message: { ...msg.message, message: payload } }
+				: msg,
+		);
+		setItem(KEYS.PINNED, newPin);
+		dispatch(pinItem(newPin));
+
+		setItem(KEYS.MESSAGES, updatedMessages);
+
+		dispatch(
+			deleteMessage(
+				updatedMessages.filter((bot) => bot.userId == user),
+			),
+		);
+	};
+
+	const deleteMessages = (id) => {
+		const updatedMessages = allMesseages.map((item) => {
+			if (item.botId == botId && item.userId == user) {
+				console.log(item.messages);
+				return {
+					...item,
+					messages: item.messages.filter((msg) => msg.id != id),
+				};
+			} else return item;
+		});
+
+		const newPin = pinned.filter((item) => item.message.id != id);
+		setItem(KEYS.PINNED, newPin);
+		dispatch(pinItem(newPin));
+
+		setItem(KEYS.MESSAGES, updatedMessages);
+
+		dispatch(
+			deleteMessage(
+				updatedMessages.filter((bot) => bot.userId == user),
+			),
+		);
 	};
 	return (
 		<div className='chatpage'>
@@ -110,28 +175,39 @@ function Chat() {
 					<UsersList />
 				</div>
 				<div className='chat-box'>
-					<div className='header'>
-						<h1>ADAM</h1>
-					</div>
 					<div className='chat-container'>
 						<ChatWindow
 							messages={messages}
 							handlePin={handlePin}
 							pinned={pinnedChat}
+							editMessages={editMessages}
+							delteMessages={deleteMessages}
 						/>
 					</div>
+					<div className='chat-box'>
+						<div className='header'>
+							<h1>ADAM</h1>
+						</div>
+						<div className='chat-container'>
+							<ChatWindow
+								messages={messages}
+								handlePin={handlePin}
+								pinned={pinnedChat}
+							/>
+						</div>
 
-					<div className='btm'>
-						<input
-							type='text'
-							onInput={handleInputChange}
-							value={input}
-							placeholder='Enter message'
-							onKeyPress={handleKeyPress}
-						></input>
-						<button className='button is medium btn' onClick={onMessageSubmit}>
-							Send
-						</button>
+						<div className='btm'>
+							<input
+								type='text'
+								onInput={handleInputChange}
+								value={input}
+								placeholder='Enter message'
+								onKeyPress={handleKeyPress}
+							></input>
+							<button className='button is medium btn' onClick={onMessageSubmit}>
+								Send
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

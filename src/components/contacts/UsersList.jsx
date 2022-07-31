@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { currentBot } from '../../actions/action';
 import { getItem, setItem } from '../../Helpers/LocalStorage';
 import '../contacts/userlist.css';
-import { contact } from '../../utils/constants';
+import { contact, THEME } from '../../utils/constants';
 
 const Userslist = () => {
 	const dispatch = useDispatch();
+	const theme = useSelector((state) => state.reducers.theme);
 
 	const userData = getItem('users') || [];
 	const botID = useSelector((state) => state.reducers.currentBot);
@@ -18,20 +19,46 @@ const Userslist = () => {
 	return (
 		<div>
 			<section>
-				<div className='userscontainer'>
+				<div
+					className='userscontainer'
+					style={
+						theme === THEME.DARK
+							? {
+									background: '#323232',
+									color: 'white',
+							  }
+							: { background: '#ebebeb', color: 'black' }
+					}
+				>
 					<header>
-						<h4>Contacts</h4>
+						<h2
+							style={
+								theme === THEME.DARK
+									? { background: '#ebebeb', color: 'black' }
+									: {
+											background: '#323232',
+											color: 'white',
+									  }
+							}
+						>
+							Contacts
+						</h2>
 						{contact?.map((user, index) => (
-							<h3
-								style={{
-									backgroundColor:
-										user.id === botID ? '' : '#ffffff39',
-									padding: '5px 10px',
-								}}
+							<div
+								className='users'
+								style={
+									theme === THEME.DARK
+										? {
+												background: '#323232',
+												color: 'white',
+										  }
+										: { background: '#ebebeb', color: 'black' }
+								}
 								onClick={() => clickHandler(user.id)}
 							>
-								{user.name}
-							</h3>
+								<img className='avatar' src={user.avatar} alt='' />
+								<h3>{user.name}</h3>
+							</div>
 						))}
 					</header>
 				</div>
