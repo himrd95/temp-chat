@@ -36,6 +36,7 @@ export const KEYS = {
 	USERS: 'users',
 	CURRENTUSER: 'user',
 	PINNED: 'pinned',
+	UNREAD: 'unread',
 };
 
 export const THEME = {

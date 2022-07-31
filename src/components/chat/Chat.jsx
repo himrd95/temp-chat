@@ -9,6 +9,7 @@ import {
 	currentUser,
 	pinItem,
 	deleteMessage,
+	setUnread,
 } from '../../actions/action';
 import ChatWindow from '../chatwindow/ChatWindow';
 import moment from 'moment';
@@ -48,6 +49,11 @@ function Chat() {
 		(pin) => pin.userId == user && pin.botId == botId,
 	);
 
+	const unread = useSelector((state) => state.reducers.unread);
+	const unreadChat = unread.filter(
+		(msg) => msg.userId == user && msg.botId == botId,
+	);
+
 	const messages = fetchedConvo.find(
 		(bot) => bot.botId == botId,
 	)?.messages;
@@ -62,16 +68,29 @@ function Chat() {
 		}
 	};
 
+	const unreadMessages = (id) => {
+		const updatedUnread = [
+			...unread,
+			{ userId: user, botId: botId, chatId: id },
+		];
+		setItem(KEYS.UNREAD, updatedUnread);
+		dispatch(setUnread(updatedUnread));
+	};
+
 	const onMessageSubmit = () => {
 		if (input === '') return;
 		const message = input;
 		const date = moment().format('LT');
 		const payload = { id: uuidv4(), message, author: 'user', date };
+		const currentBot = botId;
 
 		dispatch(saveChat(payload, fetchedConvo, currnetUser, botId));
 		setInput('');
 
 		const start = setTimeout(() => {
+			if (botId != payload.botId) {
+				unreadMessages(currentBot);
+			}
 			dispatch(
 				saveChat(
 					{ ...payload, author: 'bot', id: uuidv4() },
@@ -80,7 +99,7 @@ function Chat() {
 					botId,
 				),
 			);
-		}, 5000);
+		}, 10000);
 
 		return () => {
 			clearTimeout(start);

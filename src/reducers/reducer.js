@@ -17,6 +17,7 @@ const initialData = {
 	currentBot: 1,
 	pinned: getItem(KEYS.PINNED) || [],
 	theme: 'dark',
+	unread: getItem(KEYS.UNREAD) || [],
 	// currentUser: getItem("users")[0].id,
 };
 
@@ -59,6 +60,11 @@ const reducers = (state = initialData, action) => {
 			return {
 				...state,
 				pinned: action.payload,
+			};
+		case 'UNREAD':
+			return {
+				...state,
+				unread: action.payload,
 			};
 
 		default:
